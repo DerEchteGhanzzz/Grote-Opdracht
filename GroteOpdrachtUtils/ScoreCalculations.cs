@@ -1,5 +1,4 @@
-﻿using GroteOpdracht;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,7 @@ namespace GroteOpdrachtUtils
     public class ScoreCalculations
     {
 
-        public static float GetMaxCost(List<Order>[] orders)
+        public static float GetMaxCost(List<Node>[] orders)
         {
             float score = 0;
             foreach(var orderList in orders)
@@ -23,7 +22,7 @@ namespace GroteOpdrachtUtils
             return score;
         }
 
-        public static float CalculateScore(List<Order>[,] solutionMatrix)
+        public static float CalculateScore(List<Node>[,] solutionMatrix)
         {
             float score = 0;
             // bereken de score

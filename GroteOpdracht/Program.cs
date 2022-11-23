@@ -9,6 +9,7 @@ namespace GroteOpdracht
         /// </summary>
         public static int[,] timeMatrix = Parser.ReadDistances();
         public static List<Order>[] orders = Parser.ReadOrders();
+        public static int depotID = 287;
         static void Main()
         {
             

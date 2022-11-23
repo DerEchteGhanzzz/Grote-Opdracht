@@ -1,6 +1,5 @@
 ﻿namespace GroteOpdrachtUtils;
 using Microsoft.VisualBasic.FileIO;
-using GroteOpdracht;
 using System.Data.Common;
 
 public class Parser
@@ -55,11 +54,11 @@ public class Parser
                 float emptyTime = float.Parse(line[5]);
                 int matrixID = Int32.Parse(line[6]);
 
-                Order currentOrder = new Order(frequency, emptyTime, containerVol, containerCount, orderID);
+                Order currentOrder = new Node(frequency, emptyTime, containerVol, containerCount, orderID, matrixID);
 
                 if (orders[matrixID] == null)
                 {   // als de plek leeg is, dan: maak een nieuwe lijst met onze nieuwe order erin
-                    orders[matrixID] = new List<Order> { currentOrder };
+                    orders[matrixID] = new List<Node> { currentOrder };
                 }
                 else
                 {   // anders, voeg de order toe aan de al bestaande lijst
