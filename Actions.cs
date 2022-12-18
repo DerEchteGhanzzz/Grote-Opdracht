@@ -264,7 +264,7 @@ public class RemoveAction : Action
                                  Program.TimeMatrix[prevID, nextID] -
                                  (Program.TimeMatrix[prevID, orderNode.Order.MatrixID] +
                                   Program.TimeMatrix[orderNode.Order.MatrixID, nextID] +
-                                  orderNode.Order.PenaltyPerVisit);
+                                  orderNode.Order.EmptyTime);
         }
         return true;
     }
@@ -290,15 +290,33 @@ public class RemoveAction : Action
         Program.NotVisitedAmount++;
     }
 
-    public float GetScoreDelta() // TODO FIX
+    public float GetScoreDelta()
     {
         return scoreDeltas.Sum();
     }
 }
 
-/*public class ShiftAction : Action
+public class ShiftTripAction : Action
 {
-    public bool IsPossible(Solution s);
-    public void Act(Solution s);
-    public float GetScoreDelta();
-}*/
+    int dayIndex;
+    int truckIndex;
+    int tripIndex;
+    int nodeIndexA;
+    int nodeIndexB;
+
+    public bool IsPossible(Solution s)
+    {
+        dayIndex = RandomNumberGenerator.GetInt32(0, 5);
+        truckIndex = RandomNumberGenerator.GetInt32(0, 2);
+    }
+
+    public void Act(Solution s)
+    {
+
+    }
+
+    public float GetScoreDelta()
+    {
+
+    }
+}

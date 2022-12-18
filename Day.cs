@@ -17,6 +17,7 @@ public class Day
         TripCount[truck]--;
         TruckTimes[truck] -= time;
         Schedules[truck, tripIndex] = Schedules[truck, TripCount[truck]];
+        Schedules[truck, TripCount[truck]] = null;
     }
 
     public void CreateTrip(Order order, int truck, float timeDelta)

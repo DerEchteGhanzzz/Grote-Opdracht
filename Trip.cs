@@ -46,6 +46,7 @@ public class Trip
         }
 
         Nodes[nodesIndex] = Nodes[NodeCount];
+        Nodes[NodeCount] = null;
         Nodes[nodesIndex].NodeIndex = nodesIndex;
         return false;
     }

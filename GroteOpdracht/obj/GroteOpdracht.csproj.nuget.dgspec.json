@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdracht\\GroteOpdracht.csproj": {}
+    "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdracht\\GroteOpdracht.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj": {
+    "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj",
+        "projectUniqueName": "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj",
         "projectName": "GroteOpdrachtUtils",
-        "projectPath": "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj",
-        "packagesPath": "C:\\Users\\Hans\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdrachtUtils\\obj\\",
+        "projectPath": "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj",
+        "packagesPath": "C:\\Users\\cinni\\.nuget\\packages\\",
+        "outputPath": "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdrachtUtils\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Hans\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\cinni\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,35 +45,29 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.415\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdracht\\GroteOpdracht.csproj": {
+    "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdracht\\GroteOpdracht.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdracht\\GroteOpdracht.csproj",
+        "projectUniqueName": "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdracht\\GroteOpdracht.csproj",
         "projectName": "GroteOpdracht",
-        "projectPath": "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdracht\\GroteOpdracht.csproj",
-        "packagesPath": "C:\\Users\\Hans\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdracht\\obj\\",
+        "projectPath": "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdracht\\GroteOpdracht.csproj",
+        "packagesPath": "C:\\Users\\cinni\\.nuget\\packages\\",
+        "outputPath": "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdracht\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Hans\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\cinni\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0-windows"
+          "net6.0-windows7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -83,8 +77,8 @@
           "net6.0-windows7.0": {
             "targetAlias": "net6.0-windows",
             "projectReferences": {
-              "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj": {
-                "projectPath": "C:\\Users\\Hans\\source\\repos\\GroteOpdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj"
+              "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj": {
+                "projectPath": "E:\\Uni\\Vakken\\OOP\\Opdracht\\GroteOpdrachtUtils\\GroteOpdrachtUtils.csproj"
               }
             }
           }
@@ -104,20 +98,11 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            },
-            "Microsoft.WindowsDesktop.App.WindowsForms": {
-              "privateAssets": "none"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.415\\RuntimeIdentifierGraph.json"
         }
       }
     }
