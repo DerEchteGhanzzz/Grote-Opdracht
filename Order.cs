@@ -9,7 +9,6 @@ public class Order
     public readonly int OrderID;
 
     public int[,] NodeLookupArray;
-    private int nodesAssigned;
     public float PenaltyPerVisit
     {
         get { return 3 * EmptyTime; }
@@ -22,28 +21,21 @@ public class Order
         TrashVolume = garbagePerContainer * containerCount;
         MatrixID = matrixID;
         OrderID = orderID;
-        nodesAssigned = 0;
         NodeLookupArray = new int[frequency, 4];
     }
 
     public void AssignNode(int dayIndex, int truck, int tripIndex, int nodeIndex)
     {
-        if (nodesAssigned == NodeLookupArray.GetLength(0))
-        {
-            Console.WriteLine(NodeLookupArray[nodesAssigned-1, 0]);
-        }
         
         NodeLookupArray[nodesAssigned, 0] = dayIndex;
         NodeLookupArray[nodesAssigned, 1] = truck;
         NodeLookupArray[nodesAssigned, 2] = tripIndex;
         NodeLookupArray[nodesAssigned, 3] = nodeIndex;
-        nodesAssigned++;
     }
     
     public void ResetAssignedNodes()
     {
-        nodesAssigned = 0;
-        NodeLookupArray[nodesAssigned, 0] = -1;
+        NodeLookupArray[0, 0] = -1;
     }
 
     public override string ToString()
