@@ -1,4 +1,7 @@
-﻿namespace GroteOpdracht;
+using System;
+using System.Net.NetworkInformation;
+
+namespace GroteOpdracht;
 
 public class Order
 {
@@ -7,9 +10,9 @@ public class Order
     public readonly int TrashVolume;
     public readonly int MatrixID;
     public readonly int OrderID;
-    private int nodesAssigned;
 
-    public int[,] NodeLookupArray;
+    public Node[] NodeLookupArray;
+    private int nodesAssigned;
     public float PenaltyPerVisit
     {
         get { return 3 * EmptyTime; }
@@ -22,24 +25,23 @@ public class Order
         TrashVolume = garbagePerContainer * containerCount;
         MatrixID = matrixID;
         OrderID = orderID;
-        NodeLookupArray = new int[frequency, 4];
         nodesAssigned = 0;
+        NodeLookupArray = new Node[(int)Frequency]; // lengte aantal keren dat je er langs moet.
     }
 
-    public void AssignNode(int dayIndex, int truck, int tripIndex, int nodeIndex)
+    public void AssignNode(Node node)
     {
-        NodeLookupArray[nodesAssigned, 0] = dayIndex;
-        NodeLookupArray[nodesAssigned, 1] = truck;
-        NodeLookupArray[nodesAssigned, 2] = tripIndex;
-        NodeLookupArray[nodesAssigned, 3] = nodeIndex;
-
+        //Console.WriteLine(nodesAssigned + " " + NodeLookupArray.Length + " " + Frequency + " " + OrderID);
+        // assign Nodes to the order.
+        NodeLookupArray[nodesAssigned] = node;
         nodesAssigned++;
     }
     
-    public void ResetAssignedNodes()
+    public void ClearNodes()
     {
-        NodeLookupArray[0, 0] = -1;
-        nodesAssigned--;
+        // reset nodes
+        nodesAssigned = 0;
+        NodeLookupArray = new Node[(int)Frequency];
     }
 
     public override string ToString()
