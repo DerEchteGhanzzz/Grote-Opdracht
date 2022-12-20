@@ -94,7 +94,7 @@ public class Parser
 
     public static void PrintSolution(Solution s)
     {
-        using (StreamWriter writer = new StreamWriter(@"C:/Users/Hans/RiderProjects/GroteOpdracht/GroteOpdracht/bin/Debug/net6.0/OutputFiles/Solution.txt"))  
+        using (StreamWriter writer = new StreamWriter(@"./Solution.txt"))  
         {
              writer.WriteLine(s.ToString());
         }
