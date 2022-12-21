@@ -1,0 +1,15 @@
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\bin\Debug\net6.0\GroteOpdracht.exe
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\bin\Debug\net6.0\GroteOpdracht.deps.json
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\bin\Debug\net6.0\GroteOpdracht.runtimeconfig.json
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\bin\Debug\net6.0\GroteOpdracht.dll
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\bin\Debug\net6.0\GroteOpdracht.pdb
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.csproj.AssemblyReference.cache
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.AssemblyInfoInputs.cache
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.AssemblyInfo.cs
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.csproj.CoreCompileInputs.cache
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.dll
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\refint\GroteOpdracht.dll
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.pdb
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\GroteOpdracht.genruntimeconfig.cache
+C:\Users\Ghanzzz\RiderProjects\GroteOpdracht\GroteOpdracht\obj\Debug\net6.0\ref\GroteOpdracht.dll
