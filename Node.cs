@@ -1,9 +1,11 @@
-﻿namespace GroteOpdracht;
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace GroteOpdracht;
 
 public class Node
 {
     public Node Prev;
-    public Node Next;
+    public Node? Next;
     public Order Order;
 
     public int DayIndex;
@@ -47,18 +49,15 @@ public class Node
         
     }
 
-    public static void TwoHalfOpt(Node X1, Node Y1)
+    public void TwoHalfOpt(Node Y1)
     {
-        Node X2 = X1.Next;
-        Node Y2 = Y1.Next;
+        this.Prev.Next = this.Next;
+        this.Next = this.Prev;
+        if(Y1.Next is not null)
+            Y1.Next.Prev = this;
+        this.Next = Y1.Next;
 
-        X1.Next = X2.Next;
-        X1.Next.Prev = X1;
-        
-        Y1.Next = X2;
-        X2.Prev = Y1;
-        
-        X2.Next = Y2; 
-        Y2.Prev = X2;
+        Y1.Next = this;
+        this.Prev = Y1;
     }
 }

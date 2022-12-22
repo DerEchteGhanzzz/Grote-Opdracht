@@ -24,7 +24,7 @@ public class Day
             RemoveTripFromSchedule(trip.truck, node.TripIndex);
         }
     }
-    public void RemoveTripFromSchedule(int truck, int tripIndex)
+    private void RemoveTripFromSchedule(int truck, int tripIndex)
     {
         TripCount[truck]--; // we remove a trip
         Schedules[truck, tripIndex] = Schedules[truck, TripCount[truck]];
@@ -44,15 +44,11 @@ public class Day
         Trip trip = Schedules[truck, tripIndex];
         trip.AddOrder(Program.Orders[newOrderIndex], dayIndex, truck, tripIndex, nodeIndex);
     }
-
-    public void SwitchBetweenTrucks()
+    public void AddToSchedule(int dayIndex, int truck, int tripIndex, int nodeIndex, float timeDelta, Order newOrder)
     {
-        
-    }
-
-    public void SwitchBetweenTrips()
-    {
-        
+        TruckTimes[truck] += timeDelta;
+        Trip trip = Schedules[truck, tripIndex];
+        trip.AddOrder(newOrder, dayIndex, truck, tripIndex, nodeIndex);
     }
 
     public override string ToString()

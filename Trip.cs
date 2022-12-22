@@ -5,7 +5,6 @@ namespace GroteOpdracht;
 
 public class Trip
 {
-    public Node Start;
     public Node Depot;
     public Node[] Nodes = new Node[Program.Orders.Length];
     public int NodeCount { get; private set; }

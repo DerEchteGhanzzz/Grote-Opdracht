@@ -34,18 +34,10 @@ public class Order
 
     public void AssignNode(Node node)
     {
-
-        try
-        {
-            // assign Nodes to the order.
-            NodeLookupArray[nodesAssigned] = node;
-            nodesAssigned++;
-            added = true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(nodesAssigned + " " + NodeLookupArray.Length + " " + Frequency + " " + OrderID + " " + added);
-        }
+        // assign Nodes to the order.
+        NodeLookupArray[nodesAssigned] = node;
+        nodesAssigned++;
+        added = true;
     }
     
     public void ClearNodes()

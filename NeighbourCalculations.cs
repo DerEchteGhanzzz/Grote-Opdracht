@@ -41,7 +41,6 @@ public class NeighbourCalculations
         int max = addmode ? Program.NotVisitedAmount : Program.Orders.Length;
         
         int randomOrder = Program.random.Next(0, max);
-        
         if (randomOrder < Program.NotVisitedAmount) // update to tweak numbers
         {
             switch (Program.Orders[randomOrder].Frequency)
@@ -55,23 +54,21 @@ public class NeighbourCalculations
                 case VisitAmount.Quadruple:
                     return new AddFour(s, randomOrder);
             }
-        } else if (randomOrder >= Program.NotVisitedAmount)
-        {
-            return new RemoveAction(s, randomOrder);
-            
-        } if (false && !(randomOrder > 2))
-        {
-            /*int newNodeIndex = Program.random.Next(Program.NotVisitedAmount, Program.Orders.Length);
-            return new ShiftAction(s, newNodeIndex);*/
         }
-
-        return null;
+        int removeShiftChance = Program.random.Next(0, 100);
+        if (removeShiftChance < 10)
+            ;//return new RemoveAction(s, randomOrder);
+        if (removeShiftChance < 50)
+            return new ShiftDayAction();
+        if (removeShiftChance < 80) 
+            return new ShiftTruckAction();
+        return new ShiftTripAction();
     }
 
     private static bool AcceptAnyways(float scoreDelta, float temp)
     {
         //Console.WriteLine("Wow");
-        double probability = Math.Exp(- scoreDelta / temp);
+        double probability = Math.Exp(- scoreDelta / 8000 / temp);
         double randomDouble = Program.random.NextDouble();
         //Console.WriteLine(probability + " :: " + randomDouble + " :: " + temp + " :: " + scoreDelta);
         if (probability <= randomDouble) return true;

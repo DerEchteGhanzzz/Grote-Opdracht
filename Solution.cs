@@ -47,6 +47,7 @@ public class Solution
                     adressCount++;
                 }
             }
+            Console.WriteLine(string.Format("Day: {0}\nTime remaining 1:{1} Time remaining 2:{2}", day.Today, Program.TimePerDay- (day.TruckTimes[0]), Program.TimePerDay- (day.TruckTimes[1])));
         }
         
         return solutionString;
