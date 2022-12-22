@@ -98,7 +98,7 @@ public class AddSingle : Action
         timeDelta = futureTime - currentTime;
         scoreDelta = timeDelta - newOrder.PenaltyPerVisit;
         
-        return day.TruckTimes[truckIndex] + timeDelta > Program.TimePerDay;
+        return day.TruckTimes[truckIndex] + timeDelta < Program.TimePerDay;
     }
 
     public void Act(Solution s, bool changeVisitIndex = true)
@@ -256,37 +256,39 @@ public class RemoveAction : Action
     public bool IsPossible(Solution s)
     {
         Node[] referenceNodeArray = Program.Orders[orderIndex].NodeLookupArray;
+        if(referenceNodeArray[0] is null)
+            Console.WriteLine(string.Format("IsPossible Remove on orderIndex {0}", orderIndex));
         for (int index = 0; index < scoreDeltas.Length; index++)
         {
             //Console.WriteLine(Program.NotVisitedAmount + " " + orderIndex + " " + Program.Orders.Length);
             try
             {
                 Day day = s.Days[referenceNodeArray[index].DayIndex];
+                Trip trip = day.Schedules[referenceNodeArray[index].Truck, referenceNodeArray[index].TripIndex];
+                Node orderNode = trip.Nodes[referenceNodeArray[index].NodeIndex];
+                // calculate the difference in scores if the node is removed
+
+                int nextID = orderNode.Next is null ? Program.DepotID : orderNode.Next.Order.MatrixID;
+                int prevID = orderNode.Prev.Order.MatrixID;
+
+                timeDeltas[index] = Program.TimeMatrix[prevID, nextID] -
+                                    (Program.TimeMatrix[prevID, orderNode.Order.MatrixID] +
+                                     Program.TimeMatrix[orderNode.Order.MatrixID, nextID] +
+                                     orderNode.Order.EmptyTime);
+
+                // add penalty per visit to the score
+                scoreDeltas[index] = timeDeltas[index] + orderNode.Order.PenaltyPerVisit;
+                //Console.WriteLine(scoreDeltas[index] + " " + timeDeltas[index] + "  " +  orderNode.Order.PenaltyPerVisit);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("errored");
+                /*Console.WriteLine(e);
                 Console.WriteLine(orderIndex);
                 Console.WriteLine(Program.Orders[orderIndex]);
                 Console.WriteLine(index);
-                Console.WriteLine();
-            }
-
-            Trip trip = day.Schedules[referenceNodeArray[index].Truck, referenceNodeArray[index].TripIndex];
-            Node orderNode = trip.Nodes[referenceNodeArray[index].NodeIndex];
-            // calculate the difference in scores if the node is removed
-            
-            int nextID = orderNode.Next is null ? Program.DepotID : orderNode.Next.Order.MatrixID;
-            int prevID = orderNode.Prev.Order.MatrixID;
-            
-            timeDeltas[index] = Program.TimeMatrix[prevID, nextID] -
-                                (Program.TimeMatrix[prevID, orderNode.Order.MatrixID] +
-                                 Program.TimeMatrix[orderNode.Order.MatrixID, nextID] +
-                                 orderNode.Order.EmptyTime);
-            
-            // add penalty per visit to the score
-            scoreDeltas[index] = timeDeltas[index] + orderNode.Order.PenaltyPerVisit;
-            //Console.WriteLine(scoreDeltas[index] + " " + timeDeltas[index] + "  " +  orderNode.Order.PenaltyPerVisit);
+                Console.WriteLine();*/
+            }            
             
         }
         

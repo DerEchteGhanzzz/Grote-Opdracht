@@ -58,7 +58,7 @@ public class Order
 
     public override string ToString()
     {
-        return OrderID.ToString() + " " + Frequency + " " + EmptyTime + " " + TrashVolume;
+        return OrderID.ToString();
     }
 }
 

@@ -8,13 +8,14 @@ public class Trip
     public Node Start;
     public Node Depot;
     public Node[] Nodes = new Node[Program.Orders.Length];
-    public int NodeCount = 0;
+    public int NodeCount { get; private set; }
     public int truck;
     public int TotalTrashAmount;
 
     public Day AssignedDay;
     public Trip(Order start, int dayIndex, int truck, int tripIndex)
     {
+        NodeCount = 0;
         this.Depot = new Node(new Order(0, 0, 0, 0, Program.DepotID, 0), -1, -1, -1, -1);
         TotalTrashAmount = start.TrashVolume;
         AddOrder(start, dayIndex, truck, tripIndex, 0);

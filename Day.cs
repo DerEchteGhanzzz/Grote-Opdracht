@@ -7,7 +7,7 @@ public class Day
     public WorkDay Today;
     public Trip[,] Schedules = new Trip[2, 24]; // er zitten max 24 trips in een dag
     public int[] TripCount = { 0, 0 };
-    public float[] TruckTimes = { 0, 0 };
+    public float[] TruckTimes = { 30*60, 30*60 };
 
     public Day(WorkDay today)
     {

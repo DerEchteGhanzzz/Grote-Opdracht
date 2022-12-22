@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Runtime.InteropServices.ComTypes;
 using GroteOpdracht;
+using System.Runtime.InteropServices;
 
 namespace GroteOpdracht;
 
@@ -15,7 +16,6 @@ public class NeighbourCalculations
         {
             return true;    // skip this action, let the count continue
         }
-        
         if (action.IsPossible(s))
         {
             if (action.GetScoreDelta() < 0 || AcceptAnyways(action.GetScoreDelta(), temp))

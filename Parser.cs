@@ -108,6 +108,6 @@ public class Parser
         {
              writer.Write(s.ToString());
         }
-        Console.WriteLine($"Solution Printed! Score: {s.Score + 300*60} seconds ({s.Score/60 + 300} minutes)");
+        Console.WriteLine($"Solution Printed! Score: {s.Score} seconds ({s.Score/60} minutes)");
     }
 }

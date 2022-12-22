@@ -13,11 +13,11 @@ namespace GroteOpdracht
         public static int NotVisitedAmount = Orders.Length;
         public static readonly int DepotID = 287;
         public static readonly int TruckVolume = 100_000;
-        public static readonly float TimePerDay = 11 * 60 * 60; // seconds
+        public static readonly float TimePerDay = 12 * 60 * 60; // seconds
 
         public static Random random = new Random();
 
-        private static readonly int maxCount = 1_000_000;
+        private static readonly int maxCount = 10_000_000;
         static readonly int maxTempLowers = 10;
         static readonly int maxReheatings = 1;
         private static readonly int targetScore = 6000;
