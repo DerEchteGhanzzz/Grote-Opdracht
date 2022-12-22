@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 using System.Xml.Linq;
@@ -259,27 +260,33 @@ public class RemoveAction : Action
     public bool IsPossible(Solution s)
     {
         Node[] referenceNodeArray = Program.Orders[orderIndex].NodeLookupArray;
-        if (referenceNodeArray[0] is null)
+        if (referenceNodeArray is null)
             Console.WriteLine(string.Format("IsPossible Remove on orderIndex {0}", orderIndex));
         for (int index = 0; index < scoreDeltas.Length; index++)
         {
+            try
+            {
+                int dayIndex = referenceNodeArray[index].DayIndex;
+                Day day = s.Days[dayIndex];
+                Trip trip = day.Schedules[referenceNodeArray[index].Truck, referenceNodeArray[index].TripIndex];
+                Node orderNode = trip.Nodes[referenceNodeArray[index].NodeIndex];
+                // calculate the difference in scores if the node is removed
 
-            Day day = s.Days[referenceNodeArray[index].DayIndex];
-            Trip trip = day.Schedules[referenceNodeArray[index].Truck, referenceNodeArray[index].TripIndex];
-            Node orderNode = trip.Nodes[referenceNodeArray[index].NodeIndex];
-            // calculate the difference in scores if the node is removed
+                int nextID = orderNode.Next is null ? Program.DepotID : orderNode.Next.Order.MatrixID;
+                int prevID = orderNode.Prev.Order.MatrixID;
 
-            int nextID = orderNode.Next is null ? Program.DepotID : orderNode.Next.Order.MatrixID;
-            int prevID = orderNode.Prev.Order.MatrixID;
+                timeDeltas[index] = Program.TimeMatrix[prevID, nextID] -
+                                    (Program.TimeMatrix[prevID, orderNode.Order.MatrixID] +
+                                     Program.TimeMatrix[orderNode.Order.MatrixID, nextID] +
+                                     orderNode.Order.EmptyTime);
 
-            timeDeltas[index] = Program.TimeMatrix[prevID, nextID] -
-                                (Program.TimeMatrix[prevID, orderNode.Order.MatrixID] +
-                                 Program.TimeMatrix[orderNode.Order.MatrixID, nextID] +
-                                 orderNode.Order.EmptyTime);
-
-            // add penalty per visit to the score
-            scoreDeltas[index] = timeDeltas[index] + orderNode.Order.PenaltyPerVisit;
-
+                // add penalty per visit to the score
+                scoreDeltas[index] = timeDeltas[index] + orderNode.Order.PenaltyPerVisit;
+            } catch(System.NullReferenceException ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
         }
 
         return true;
@@ -292,10 +299,11 @@ public class RemoveAction : Action
         for (int index = 0; index < reference.GetLength(0); index++)
         {
             Day day = s.Days[reference[index].DayIndex];
-            Trip trip = day.Schedules[reference[index].Truck, reference[index].TripIndex];
+            int truckIndex = reference[index].Truck;
+            int tripIndex = reference[index].TripIndex;
             
             // remove the node from the trip of the truck of the day
-            day.RemoveNodeFromTrip(reference[index].Truck, trip, reference[index], timeDeltas[index]);
+            day.RemoveNodeFromTrip(truckIndex, tripIndex, reference[index].NodeIndex, timeDeltas[index]);
         }
 
         // This node now gets swapped with the last node in the list, so it now belongs to the orders that are not yet used
@@ -381,7 +389,6 @@ public class ShiftTripAction : Action
 
 public class ShiftDayAction : Action
 {
-
     protected int dayIndexX;
     protected int dayIndexY;
 
@@ -399,24 +406,19 @@ public class ShiftDayAction : Action
 
     public virtual bool IsPossible(Solution s)
     {
-        dayIndexX = Program.random.Next(0, 4);
-        dayIndexY = Program.random.Next(dayIndexX, 5);
+        Init(s);
 
-        truckIndexX = Program.random.Next(0, 2);
-        truckIndexY = Program.random.Next(0, 2);
+        if (nodeIndexY == -1) 
+            return false;
+
+        if (NonValid(s))
+            return false;
 
         Day dayX = s.Days[dayIndexX];
         Day dayY = s.Days[dayIndexY];
-        if (!GenerateTripNodeIndices(dayX, true) || !GenerateTripNodeIndices(dayY, false))
-            return false;
 
-        Trip tripX = dayX.Schedules[truckIndexX, tripIndexX];
-        Node nodeX2 = tripX.Nodes[nodeIndexX];
-        Trip tripY = dayY.Schedules[truckIndexY, tripIndexY];
-        Node nodeY1 = tripY.Nodes[nodeIndexY];
-
-        if(nodeX2.Order.Frequency != VisitAmount.Once || nodeY1.Order.Frequency != VisitAmount.Once)
-            return false;
+        Node nodeX2 = dayX.Schedules[truckIndexX, tripIndexX].Nodes[nodeIndexX];
+        Node nodeY1 = dayY.Schedules[truckIndexY, tripIndexY].Nodes[nodeIndexY];
 
         int x3 = nodeX2.Next is null ? Program.DepotID : nodeX2.Next.Order.MatrixID;
         int x2 = nodeX2.Order.MatrixID;
@@ -428,7 +430,7 @@ public class ShiftDayAction : Action
         float costNowX = Program.TimeMatrix[x1, x2] +
             Program.TimeMatrix[x2, x3];
 
-        float costNowY =Program.TimeMatrix[y1, y2];
+        float costNowY = Program.TimeMatrix[y1, y2];
 
 
         float costFutureX = Program.TimeMatrix[x1, x3] - nodeX2.Order.EmptyTime;
@@ -441,30 +443,53 @@ public class ShiftDayAction : Action
         timeDeltaY = costFutureY - costNowY;
 
         return (dayX.TruckTimes[truckIndexX] + timeDeltaX <= Program.TimePerDay &&
-            dayY.TruckTimes[truckIndexY] +timeDeltaY <= Program.TimePerDay);
-    }
+            dayY.TruckTimes[truckIndexY] + timeDeltaY <= Program.TimePerDay);
 
-    protected bool GenerateTripNodeIndices(Day day, bool isFirst)
-    {
-        int truckIndex = truckIndexY;
-        if (isFirst)
-            truckIndex = truckIndexX;
-
-        int tripIndex = day.TripCount[truckIndex] > 0 ? Program.random.Next(0, day.TripCount[truckIndex]) : 0;
-        if (day.Schedules[truckIndex, tripIndex] is null || day.Schedules[truckIndex, tripIndex].NodeCount <= 0)
-        {
-            return false;
-        }
         
-        if(isFirst)
+    }
+    private void Init(Solution s)
+    {
+        dayIndexX = Program.random.Next(0, 4);
+        dayIndexY = Program.random.Next(dayIndexX, 5);
+
+        truckIndexX = Program.random.Next(0, 2);
+        truckIndexY = Program.random.Next(0, 2);
+
+        Day dayX = s.Days[dayIndexX];
+
+        tripIndexX = dayX.TripCount[truckIndexX] > 0 ? Program.random.Next(0, dayX.TripCount[truckIndexX]) : 0;
+        if (dayX.Schedules[truckIndexX, tripIndexX] is null)
         {
-            tripIndexX = tripIndex;
-            nodeIndexX = Program.random.Next(0, day.Schedules[truckIndex, tripIndex].NodeCount);
-            return true;
+            nodeIndexY = -1;
+            return;
         }
-        tripIndexY = tripIndex;
-        nodeIndexY = Program.random.Next(0, day.Schedules[truckIndex, tripIndex].NodeCount);
-        return true;
+        nodeIndexX = Program.random.Next(0, dayX.Schedules[truckIndexX, tripIndexX].NodeCount);
+
+        Day dayY = s.Days[dayIndexY];
+
+        tripIndexY = dayY.TripCount[truckIndexY] > 0 ? Program.random.Next(0, dayY.TripCount[truckIndexY]) : 0;
+        if (dayY.Schedules[truckIndexY, tripIndexY] is null)
+        {
+            nodeIndexY = -1;
+            return;
+        }
+        nodeIndexY = Program.random.Next(0, dayY.Schedules[truckIndexY, tripIndexY].NodeCount);
+    }
+    public bool NonValid(Solution s)
+    {
+        bool cond1 = dayIndexX != dayIndexY ||
+            truckIndexX != truckIndexY ||
+            tripIndexX != tripIndexY  ||
+            nodeIndexX != nodeIndexY;
+
+        Node nodeX2 = s.Days[dayIndexX].Schedules[truckIndexX, tripIndexX].Nodes[nodeIndexX];
+        Node nodeY1 = s.Days[dayIndexY].Schedules[truckIndexY, tripIndexY].Nodes[nodeIndexY];
+
+        bool cond2 = nodeX2.Prev != nodeY1;
+
+        bool cond3 = dayIndexX != dayIndexY || nodeX2.Order.Frequency == VisitAmount.Once;
+
+        return cond1 && cond2 && cond3; 
     }
 
     public void Act(Solution s, bool changeVisitIndex)
@@ -472,9 +497,11 @@ public class ShiftDayAction : Action
 
         Day dayX = s.Days[dayIndexX];
         Day dayY = s.Days[dayIndexY];
+        
         Node nodeX2 = dayX.Schedules[truckIndexX, tripIndexX].Nodes[nodeIndexX];
 
-        dayX.RemoveNodeFromTrip(truckIndexX, dayX.Schedules[truckIndexX, tripIndexX], nodeX2, timeDeltaX);
+        dayX.RemoveNodeFromTrip(truckIndexX, tripIndexX, nodeIndexX, timeDeltaX);
+
         dayY.AddToSchedule(dayIndexY, truckIndexY, tripIndexY, nodeIndexY, timeDeltaY, nodeX2.Order);
     }
 
@@ -484,7 +511,7 @@ public class ShiftDayAction : Action
     }
 }
 
-public class ShiftTruckAction : ShiftDayAction
+/*public class ShiftTruckAction : ShiftDayAction
 {
     public override bool IsPossible(Solution s)
     {
@@ -529,4 +556,4 @@ public class ShiftTruckAction : ShiftDayAction
         return (dayX.TruckTimes[truckIndexX] + timeDeltaX <= Program.TimePerDay &&
             dayY.TruckTimes[truckIndexY] + timeDeltaY <= Program.TimePerDay);
     }
-}
+}*/

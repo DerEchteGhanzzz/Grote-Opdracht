@@ -56,13 +56,13 @@ public class NeighbourCalculations
             }
         }
         int removeShiftChance = Program.random.Next(0, 100);
-        if (removeShiftChance < 10)
-            ;//return new RemoveAction(s, randomOrder);
-        if (removeShiftChance < 50)
+        if (removeShiftChance < 10) ;
+            //return new RemoveAction(s, randomOrder);
+            if (removeShiftChance < 50) ;
             return new ShiftDayAction();
-        if (removeShiftChance < 80) 
-            return new ShiftTruckAction();
-        return new ShiftTripAction();
+        if (removeShiftChance < 80)
+            ;// return new ShiftTruckAction();
+        //return new ShiftTripAction();
     }
 
     private static bool AcceptAnyways(float scoreDelta, float temp)

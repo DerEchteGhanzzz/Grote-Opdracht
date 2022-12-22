@@ -12,6 +12,7 @@ public class Node
     public int Truck;
     public int TripIndex;
     public int NodeIndex;
+
     public Node(Order order, int dayIndex, int truck, int tripIndex, int nodeIndex)
     {
         this.Order = order;

@@ -11,8 +11,6 @@ public class Order
     public readonly int MatrixID;
     public readonly int OrderID;
 
-    private bool added;
-
     public Node[] NodeLookupArray;
     private int nodesAssigned;
     public float PenaltyPerVisit
@@ -29,7 +27,6 @@ public class Order
         OrderID = orderID;
         nodesAssigned = 0;
         NodeLookupArray = new Node[(int)Frequency]; // lengte aantal keren dat je er langs moet.
-        added = false;
     }
 
     public void AssignNode(Node node)
@@ -37,7 +34,6 @@ public class Order
         // assign Nodes to the order.
         NodeLookupArray[nodesAssigned] = node;
         nodesAssigned++;
-        added = true;
     }
     
     public void ClearNodes()
@@ -45,7 +41,6 @@ public class Order
         // reset nodes
         nodesAssigned = 0;
         NodeLookupArray = new Node[(int)Frequency];
-        added = false;
     }
 
     public override string ToString()

@@ -4,30 +4,40 @@ namespace GroteOpdracht;
 
 public class Day
 {
-    public WorkDay Today;
-    public Trip[,] Schedules = new Trip[2, 24]; // er zitten max 24 trips in een dag
-    public int[] TripCount = { 0, 0 };
-    public float[] TruckTimes = { 30*60, 30*60 };
+    public readonly WorkDay Today;
+    public Trip[,] Schedules { get; private set; } // [truck, trip]
+    public int[] TripCount { get; private set; }
+    public float[] TruckTimes { get; private set; }
 
     public Day(WorkDay today)
     {
         Today = today;
+        Schedules = new Trip[2, 24]; // er zitten max 24 trips in een dag
+        TripCount = new int[]{ 0, 0 };
+        TruckTimes = new float[]{ 30 * 60, 30 * 60 };
     }
 
-    public void RemoveNodeFromTrip(int truck, Trip trip, Node node, float timeDelta)
+    public void RemoveNodeFromTrip(int truck, int trip, int nodeIndex, float timeDelta)
     {
-        TruckTimes[node.Truck] += timeDelta;
+        TruckTimes[truck] += timeDelta;
         
         // if true, the trip is empty and can be deleted.
-        if (trip.RemoveNode(node.NodeIndex))
+        if (Schedules[truck,trip].RemoveNode(nodeIndex))
         {
-            RemoveTripFromSchedule(trip.truck, node.TripIndex);
+            RemoveTripFromSchedule(truck, trip);
         }
     }
     private void RemoveTripFromSchedule(int truck, int tripIndex)
     {
         TripCount[truck]--; // we remove a trip
-        Schedules[truck, tripIndex] = Schedules[truck, TripCount[truck]];
+        try
+        {
+            Schedules[truck, tripIndex] = Schedules[truck, TripCount[truck]];
+        }
+        catch (System.IndexOutOfRangeException e)
+        {
+            Console.WriteLine(string.Format("errorDay: {0}\nTruck: {1}\ntripcount:{2}",Today, truck, TripCount[truck]));
+        }
         TruckTimes[truck] -= 30 * 60;   // remove the depot empty time.
     }
 
@@ -42,13 +52,13 @@ public class Day
     {
         TruckTimes[truck] += timeDelta;
         Trip trip = Schedules[truck, tripIndex];
-        trip.AddOrder(Program.Orders[newOrderIndex], dayIndex, truck, tripIndex, nodeIndex);
+        trip.AddOrder(Program.Orders[newOrderIndex], dayIndex, tripIndex, nodeIndex);
     }
     public void AddToSchedule(int dayIndex, int truck, int tripIndex, int nodeIndex, float timeDelta, Order newOrder)
     {
         TruckTimes[truck] += timeDelta;
         Trip trip = Schedules[truck, tripIndex];
-        trip.AddOrder(newOrder, dayIndex, truck, tripIndex, nodeIndex);
+        trip.AddOrder(newOrder, dayIndex, tripIndex, nodeIndex);
     }
 
     public override string ToString()
