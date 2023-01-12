@@ -12,6 +12,7 @@ public class Node
     public int Truck;
     public int TripIndex;
     public int NodeIndex;
+
     public Node(Order order, int dayIndex, int truck, int tripIndex, int nodeIndex)
     {
         this.Order = order;
@@ -29,6 +30,9 @@ public class Node
         
         Prev.Next = Next;
         if (Next is not null) Next.Prev = Prev; // check if the next or next node even exists
+
+        this.Next = null;
+        this.Prev = null;
         
         Order.ClearNodes(); // order resets the nodeCount because all nodes will get removed
     }
@@ -52,7 +56,8 @@ public class Node
     public void TwoHalfOpt(Node Y1)
     {
         this.Prev.Next = this.Next;
-        this.Next = this.Prev;
+        if (!(this.Next is null))
+            this.Next.Prev = this.Prev;
         if(Y1.Next is not null)
             Y1.Next.Prev = this;
         this.Next = Y1.Next;

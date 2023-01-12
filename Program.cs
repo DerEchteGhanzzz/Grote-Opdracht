@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices;
 
-namespace GroteOpdracht
+namespace GroteOpdracht // Nic van der Stegen, Hans Blankensteijn en Santiago Nuñez Velasco
 {
     public static class Program
     {
@@ -8,86 +12,92 @@ namespace GroteOpdracht
         ///  The main entry point for the application.
         /// </summary>
         public static int[,] TimeMatrix = Parser.ReadDistances();
-        
+
         public static Order[] Orders = Parser.ReadOrders();
-        public static int NotVisitedAmount = Orders.Length;
+        public static int NotVisitedAmount; // een pointer die weet hoeveel orders er nog niet in de oplossing zitten
+        
         public static readonly int DepotID = 287;
-        public static readonly int TruckVolume = 100_000;
+        public static readonly int TruckVolume = 100_000;       
         public static readonly float TimePerDay = 12 * 60 * 60; // seconds
 
-        public static Random random = new Random();
+        public static Random random = new Random(); // de random number generator
 
-        private static readonly int maxCount = 10_000_000;
-        static readonly int maxTempLowers = 10;
-        static readonly int maxReheatings = 1;
-        private static readonly int targetScore = 6000;
-        private static readonly float small = (float) 0.001;
+        private static int maxCount;  // aantal iteraties voordat temp omlaag gaat
 
         static float a = (float) 0.99;
-        private static float temp = 1;
+        public static float BeginTemp = 2_000;
 
-        static void Main() // TODO PROGRAM CRAHSES RANDOMLY
+        static void Main()
         {
-            Solution s = new Solution();
-            SimulatedAnnealling(s);   // addmode is so a run is only done with adding nodes
-            //SimulatedAnnealling(s);
-            Parser.PrintSolution(s);
-        }
 
+            while (true) {  // we gaan gewoon oneindig door
+                try
+                {
+                    NotVisitedAmount = Orders.Length;
+                    Solution s = new Solution(); // we maken een oplossing aan
+                    
+                    maxCount = 10_000_000;
+                    SimulatedAnnealling(s, true); // addmode staat aan, dus we gaan alleen dingen toevoegen
+                    
+                    maxCount = 250_000;
+                    SimulatedAnnealling(s);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    Orders = Parser.ReadOrders();
+                }
+            }
+        }
+        
         public static void SimulatedAnnealling(Solution s, bool addmode = false)
         {
             int count = 0;
-            int lowerTemp = 0;
-            int reheat = 0;
+            bool reheating = false;
+            float temp = BeginTemp;
             
-            Console.WriteLine($"Initial score: {s.Score}");
-
-            var watch = new System.Diagnostics.Stopwatch();
-            watch.Start();
+            float currentBest = 5900*60;
+            
+            Console.WriteLine($"Initial score: {s.Score} seconds ({s.Score / 60} minutes)");
+            
             while (true)
             {
-                if (NeighbourCalculations.Accept(s, temp, addmode))
-                {
-                    
-                }
+                NeighbourCalculations.Accept(s, temp, addmode, reheating);
                 count++;
-                //Console.WriteLine("Accept");
                 
-
-
                 if (count >= maxCount)
                 {
-                    temp *= a;
-                    count = 0;
-                    watch.Stop();
-                    if (lowerTemp == 0 && reheat == 0)
+                    reheating = false;
+                    temp *= a;  // verlaag de temperatuur
+                    count = 0;  // reset de count
+                    
+                    if (addmode)
                     {
-                        Console.WriteLine($"{maxCount} iterations in {watch.ElapsedMilliseconds} ms");
-                        Console.WriteLine(
-                            $"Expected time until done: {(float) watch.ElapsedMilliseconds / 1000 / 60 * maxTempLowers * maxReheatings} minutes. (at around {DateTime.Now + TimeSpan.FromMinutes((float) watch.ElapsedMilliseconds / 1000 / 60 * maxTempLowers * maxReheatings)})");
+                        s.ToString();
+                        return;
                     }
-
-                    lowerTemp++;
                 }
 
-                if (lowerTemp >= maxTempLowers)
+                if (s.Score < currentBest)
                 {
-
-                    //Console.WriteLine($"Reheating temp for the {reheat+1}. time");
-                    if (s.Score <= targetScore) // we willen eerst onder de 6000
+                    if (s.IsValid())
                     {
-                        break;
+                        Parser.PrintSolution(s);
+                        currentBest = s.Score;
                     }
-
-                    temp += small;
-                    lowerTemp = 0;
-                    reheat++;
                 }
-
-                if (reheat >= maxReheatings)
+                
+                if (reheating || temp > 1)
                 {
-                    break;
+                    continue;
                 }
+                
+                // going to reheat
+                count = maxCount - 5; // oplossing opschudden
+                reheating = true;
+                temp = 100;
+                
+                Console.WriteLine($"Reheating. Current score = {s.Score / 60} minutes.");
             }
         }
     }

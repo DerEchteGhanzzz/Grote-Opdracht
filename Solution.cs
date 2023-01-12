@@ -7,9 +7,11 @@ public class Solution
 {
     public Day[] Days;
     public float Score;
+    public float Overtime;
     public Solution()
     {
         Score = InitialScore();
+        Overtime = 0;
         Days = new Day[5];
         for (int i = 0; i < 5; i++)
         {
@@ -20,6 +22,22 @@ public class Solution
     public void ChangeScore(float scoreDelta)
     {
         this.Score += scoreDelta;
+    }
+
+    public bool IsValid()
+    {
+        foreach (Day day in Days)
+        {
+            for (int truck = 0; truck < 2; truck++)
+            {
+                if (day.TruckTimes[truck] > Program.TimePerDay)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
     
     public override string ToString()
@@ -47,7 +65,7 @@ public class Solution
                     adressCount++;
                 }
             }
-            Console.WriteLine(string.Format("Day: {0}\nTime remaining 1:{1} Time remaining 2:{2}", day.Today, Program.TimePerDay- (day.TruckTimes[0]), Program.TimePerDay- (day.TruckTimes[1])));
+            Console.WriteLine(string.Format("Day: {0}\nOvertime 1:{1} \nOvertime 2:{2}", day.Today, -Program.TimePerDay+ (day.TruckTimes[0]), -Program.TimePerDay+ (day.TruckTimes[1])));
         }
         
         return solutionString;

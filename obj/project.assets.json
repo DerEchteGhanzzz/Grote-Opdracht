@@ -8,24 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\cinni\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Ghanzzz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Uni\\Vakken\\OOP\\Refactor\\GroteOpdracht.csproj",
+      "projectUniqueName": "C:\\Users\\Ghanzzz\\RiderProjects\\GroteOpdracht\\GroteOpdracht\\GroteOpdracht.csproj",
       "projectName": "GroteOpdracht",
-      "projectPath": "E:\\Uni\\Vakken\\OOP\\Refactor\\GroteOpdracht.csproj",
-      "packagesPath": "C:\\Users\\cinni\\.nuget\\packages\\",
-      "outputPath": "E:\\Uni\\Vakken\\OOP\\Refactor\\obj\\",
+      "projectPath": "C:\\Users\\Ghanzzz\\RiderProjects\\GroteOpdracht\\GroteOpdracht\\GroteOpdracht.csproj",
+      "packagesPath": "C:\\Users\\Ghanzzz\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ghanzzz\\RiderProjects\\GroteOpdracht\\GroteOpdracht\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\cinni\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Ghanzzz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -66,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

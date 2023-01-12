@@ -11,13 +11,11 @@ public class Order
     public readonly int MatrixID;
     public readonly int OrderID;
 
-    private bool added;
-
     public Node[] NodeLookupArray;
     private int nodesAssigned;
     public float PenaltyPerVisit
     {
-        get { return 3 * EmptyTime; }
+        get { return 3 * EmptyTime; }   // strafkosten (deze worden later vermenigvuldigd met hoe vaak we per week niet kwamen opdagen)
     }
 
     public Order(int frequency, float emptyTime, int garbagePerContainer, int containerCount, int matrixID, int orderID)
@@ -29,23 +27,21 @@ public class Order
         OrderID = orderID;
         nodesAssigned = 0;
         NodeLookupArray = new Node[(int)Frequency]; // lengte aantal keren dat je er langs moet.
-        added = false;
     }
 
     public void AssignNode(Node node)
     {
-        // assign Nodes to the order.
+        // De nodeLoopupArray is om meerdere nodes aan een order te koppelen. Zo kan een order op meerdere dagen worden gedaan
         NodeLookupArray[nodesAssigned] = node;
         nodesAssigned++;
-        added = true;
     }
     
     public void ClearNodes()
     {
         // reset nodes
+        if (nodesAssigned == 0) return; // nodes already reset
         nodesAssigned = 0;
-        NodeLookupArray = new Node[(int)Frequency];
-        added = false;
+        NodeLookupArray = new Node[(int)Frequency]; // lengte aantal keren dat je er langs moet.
     }
 
     public override string ToString()

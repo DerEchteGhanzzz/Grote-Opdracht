@@ -10,7 +10,7 @@ public class Parser
     public static int[,] ReadDistances(string path = @"InputFiles/AfstandenMatrix.csv")
     {
         // maak een matrix aan (2-dimensionale array) van lengte/breedte = alle bestemmingen
-        int[,] timeMatrix = new int[1099, 1099];
+        int[,] timeMatrix = new int[1099, 1099];    // er zijn 1099 bestemmingen
         using (TextFieldParser csvParser = new TextFieldParser(path))
         {
             csvParser.CommentTokens = new string[] { "#" };
@@ -75,39 +75,43 @@ public class Parser
             return orders;
         }
     }
-
-    public static void PrintOrders(List<Order>[] orders, string delim = " ")
-    {
-        foreach (List<Order> orderList in orders)
-        {
-            PrintOrderList(orderList);
-        }
-        Console.Write("\n");
-    }
-
-    public static void PrintOrderList(List<Order> orderList)
-    {
-        foreach (Order order in orderList)
-        {
-            Console.Write(order.ToString());
-        }
-    }
-
-    public static void PrintDistanceMatrix(List<List<int>> matrix, string delim = " ")
-    {
-        foreach (var item in matrix)
-        {
-            // implementeer
-        }
-        Console.Write("\n");
-    }
-
+    
     public static void PrintSolution(Solution s)
     {
         using (StreamWriter writer = new StreamWriter(@"./Solution.txt"))  
         {
              writer.Write(s.ToString());
         }
+
+        float best = GetBestScore(s);
+        if (s.Score <= best && s.IsValid())
+        {
+            using (StreamWriter writer = new StreamWriter(@"./BestScore.txt"))  
+            {
+                writer.Write(s.Score);
+            }
+            using (StreamWriter writer = new StreamWriter(@"./SolutionBest.txt"))  
+            {
+                writer.Write(s.ToString());
+            }
+        }
+        
+        Console.WriteLine($"@ {DateTime.Now}");
         Console.WriteLine($"Solution Printed! Score: {s.Score} seconds ({s.Score/60} minutes)");
+        Console.WriteLine($"Old best score: {best} seconds ({best/60} minutes). New score better than best? {s.Score < best}");
+    }
+
+    public static float GetBestScore(Solution s)
+    {
+        try
+        {
+            string text = File.ReadAllText(@"./BestScore.txt").Split("\n")[0];
+            return float.Parse(text);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return s.Score;
+        }
     }
 }
